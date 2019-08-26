@@ -1,0 +1,554 @@
+setting.dat.ftl,"<?xml version=""1.0"" encoding=""UTF-8""?>
+<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd""> 
+<html xmlns=""http://www.w3.org/1999/xhtml"" xml:lang=""en"" lang=""en""> 
+   <head>
+  <meta http-equiv=""Content-Script-Type"" content=""text/javascript"" />
+  <meta http-equiv=""Content-Style-Type"" content=""text/css"" />
+      <title>${institution_name} Document Share URL Information</title>
+      <style type=""text/css"">
+         a
+         {
+            text-decoration: none; 
+            color:           #1948b1;
+         }
+         #pageheader
+         {
+            margin-bottom:    1em;
+            margin-left: auto;
+            margin-right: auto;
+            width:            700px;
+            padding:          2pt;
+            border:           0pt;
+            font-family:      Verdana;
+            font-size:        18pt;
+            color:            #000000;
+            text-align:       center;
+            display-align:    center;
+         }
+         #pagefooter
+         {
+            margin-bottom:    1em;
+            border:           0pt;
+            font-family:      Verdana;
+            font-size:        8pt;
+            text-align:       center;
+            display-align:    center;
+         }
+
+         #para
+         {
+            margin-bottom:    1em;
+            width:            700px;
+            padding:          2pt;
+            font-family:      Verdana;
+            font-size:        10pt;
+            color:            #000000;
+            text-align:       justify;
+            display-align:    center;
+         }
+
+         #section
+         {
+            padding:          2pt;
+            font-family:      Verdana;
+            font-size:        14pt;
+            color:            #000000;
+            text-align:       left;
+            display-align:    center;
+         }
+
+         .para
+         {
+            margin-bottom:    1em;
+            margin-left: auto;
+            margin-right: auto;
+            width:            700px;
+            padding:          2pt;
+            font-family:      Verdana;
+            font-size:        10pt;
+            color:            #000000;
+            text-align:       justify;
+            display-align:    center;
+         }
+
+         .section
+         {
+            padding:          2pt;
+            margin-left: auto;
+            margin-right: auto;
+            width:            700px;
+            font-family:      Verdana;
+            font-size:        14pt;
+            color:            #000000;
+            text-align:       left;
+            display-align:    center;
+         }
+
+         #fieldlabel
+         {
+            font-family:      Verdana;
+            font-weight:      bold;
+            font-size:        12pt;
+            color:            #000000;
+            text-align:       left;
+         }
+         #fieldvalue
+         {
+            font-family:      Verdana;
+            font-weight:      none;
+            font-size:        12pt;
+            color:            #000000;
+            text-align:       left;
+         }
+      </style>
+   </head>
+   <#assign accessType = ticket.getAccessType()?int />
+   <#assign expiry = ticket.getExpires() />
+   <body bgcolor=""#ffffff"">
+
+      <div id=""pageheader"">${institution_name}<br/>Document Share URL Information</div>
+      <br/><br/>
+
+      <div class=""para"">This email was automatically sent to you by ${institution_name} at the request of ${user.getFullName()} (<a href=""mailto:${user.getEmailAddress()}"">${user.getEmailAddress()}</a>), who is a student or graduate of
+       ${institution_name}. ${institution_name} has issued ${user.getFullName()} with an electronic ${document.getProfileDTO().getProfileName()} which can be securely verified online at a website controlled by ${institution_name}.
+      </div>
+      <br/><br/>
+
+      <div class=""section"">How do I know this email is genuine?</div>
+      <div class=""para"">This email is <strong>digitally signed</strong> using an email address at ${institution_name}, and cannot be fabricated or modified. You can check the digital signature on this email using your 
+      email application.
+      </div>
+      <br/><br/>
+
+      <div class=""section"">How do I verify the document online?</div>
+      <div class=""para"">${institution_name} provides a <strong>free and secure online service</strong> for recruiters and other third parties to verify the authenticity of official documents issued to its graduates. Only authorised
+      officials of ${institution_name} can create documents on this site, however students/graduates can control and monitor <em>who</em> accesses their official documents online. This is the <strong>official</strong> way 
+      for these types of documents to be verified at ${institution_name}, and is more secure than using paper documents.
+      <br/><br/>
+      To verify the document online, click on the <em>document share URL</em> shown below:<br/><br/>
+
+      <a href=""${verifydaturl}?datid=${ticket.getTicketId()}"" style=""color:red"">${verifydaturl}?datid=${ticket.getTicketId()}</a><br/><br/>
+
+      <#if accessType != 3>
+           You will need to register your details at ${institution_name} online if you have not already done so. Registration is free and straightforward, and has been requested by ${user.getFullName()} in 
+           order to restrict access to his/her document for Data Protection reasons. Once you are registered and logged in, you can access the document online by visiting the document share URL shown above.
+      </#if>
+      <br/>
+      The document will be verified online and you will be able to view the document as it was originally issued by ${institution_name}.
+      <br/><br/>
+
+      <#if accessType == 2>
+           Note that access to this URL is restricted to the recipient at the email address: <strong>${ticket.getRecipient()}</strong>
+      <#elseif accessType == 3>
+           Access to this URL is open to anybody who has obtained the permission of ${user.getFullName()}, no registration is required.
+      <#elseif accessType == 1>
+           Access to this URL is open to anybody who has obtained the permission of ${user.getFullName()}, however online registration at ${institution_name} is required.
+      </#if>
+      <br/><br/>
+
+      <#if expiry != ""-1"">
+          The document is accessible via the above URL until: ${formatter.formatDate(""${expiry}"")}
+      </#if>
+      </div>
+
+      <br/><br/>
+      <div class=""section"">Where can I find more information?</div>
+      <div class=""para"">Log on to the secure document verification website at ${institution_name}. The URL is: <a href=""${verifier_webroot}"">${verifier_webroot}</a></div>
+
+      <br/><br/>            
+      <div id=""pagefooter"">Powered by <a href=""http://www.digitary.net"">Digitary&reg;</a></div>
+   </body>
+</html>
+
+
+"
+setting.introemail.ftl,"==============================
+AUTOMATED EMAIL - DO NOT REPLY
+==============================
+
+Dear ${systemuser.getFullName()},
+
+     You will shortly receive a digitally-signed email from the Digitary secure electronic document system here at Framework University. The digital signature on this email is to assure you that the email actually came from this system.
+
+     IMPORTANT!!! When you receive this email, your email client may display the email as ""untrusted"". This is because your software does not currently trust the digital certificates used by our system. Our digital certificates are issued by the eCommerce division of An Post, the Irish state-owned postal service. 
+
+     To enable trust for these certificates, you may download them from the Digitary Framework University website:
+
+     https://digitary.framework.ie/pci_root.cer (Post Trust Root CA Certificate)
+     https://digitary.framework.ie/pci_int.cer  (Post Trust Operational CA Certificate)
+
+     Alternatively, you may download both certificates directly from the Post Trust website:
+
+     http://www.post.trust.ie/reposit/rootcert.html
+
+     Follow the instructions on screen to install the certificates.
+
+----
+This email was automatically generated by the Digitary system
+----
+Framework University.
+"
+setting.newaccount.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${systemuser.getFullName()},
+
+     This is an automated email. In response to an online registration request made using your e-mail address (${systemuser.getEmailAddress()}), a user account has been created at the online document verification system at the ${institution_name}. The account requires activation before it can be used.
+
+To activate the account, you must confirm ownership of the supplied e-mail address by clicking on the following link: ${activationurl}
+
+If clicking the link above does not work, copy and paste the full URL in a new browser window instead.
+
+For any queries about using this service, please contact ${verifier_contact_name} at: ${verifier_contact_email}
+
+If you have not requested this service, please ignore this e-mail.
+
+
+${verifier_contact_name},
+
+${institution_name}
+--------------------------------------------------------------
+Powered by Digitary(R)
+http://www.digitary.net
+
+"
+setting.pdfticket.ftl,"<#ftl ns_prefixes={
+    ""xsd"":""http://www.w3.org/2001/XMLSchema"",
+    ""ds"":""http://www.w3.org/2000/09/xmldsig#"",
+    ""eds"":""urn:digitary.framework.ie:2005:09:eds"",
+    ""digitary"":""urn:digitary.org:securedocument:instance"",
+    ""dty"":""urn:framework.ie:digitary:system:schema-annotations""}
+>   
+<fo:root xmlns:fo=""http://www.w3.org/1999/XSL/Format"">
+	<fo:layout-master-set>
+		<fo:simple-page-master master-name=""simpleA4"" page-height=""29.7cm"" page-width=""21cm"" margin-top=""10mm"" margin-bottom=""5mm"" margin-left=""10mm"" margin-right=""10mm"">
+			<fo:region-body/>
+		</fo:simple-page-master>
+	</fo:layout-master-set>
+
+	<fo:page-sequence master-reference=""simpleA4"">
+		<fo:flow flow-name=""xsl-region-body"">
+
+			<!--
+			Titles
+			-->
+			<fo:block font-size=""14pt""
+				text-align=""center"" 
+				space-after=""1cm"">Digitary University Document Access Ticket</fo:block>
+			<fo:block font-size=""8pt"" family=""Verdana,Sans-Serif"" 
+				text-align=""justify"" space-after=""5mm"">
+				As and from September 2005, Digitary University has deployed the Digitary secure electronic document system for issuing and verifying academic qualifications online.  
+			</fo:block>	   
+
+			<fo:block font-size=""10pt""
+				text-align=""left"" space-after=""1mm"">
+				What is this document?
+			</fo:block>
+
+			<fo:block font-size=""8pt"" family=""Verdana,Sans-Serif"" 
+				text-align=""justify"" space-after=""5mm"">
+				This is a Document Access Ticket that has been uniquely generated by a graduate of Digitary University using the Digitary system. This document contains a 
+				unique Document Access Code that can be used to verify the authenticity of the graduate's qualifications via a secure site at Digitary University.
+			</fo:block>
+
+			<fo:block font-size=""10pt""
+				text-align=""left"" space-after=""1mm"">
+				I am a graduate of Digitary University - How do I use this document?
+			</fo:block>
+
+			<fo:block font-size=""8pt"" family=""Verdana,Sans-Serif"" 
+				text-align=""justify"" space-after=""5mm"">
+				Simply give a copy of this page to prospective employers or other third parties that need to verify your qualifications. The text on this document provides a 
+				brief introduction to the concept of the access ticket to third parties.
+			</fo:block>
+
+			<fo:block font-size=""10pt""
+				text-align=""left"" space-after=""1mm"">
+				I am an employer or other third party - I have received this document from a graduate of Digitary University 
+			</fo:block>
+
+			<fo:block font-size=""8pt"" family=""Verdana,Sans-Serif"" 
+				text-align=""justify"" space-after=""5mm"">
+				To verify the graduate's document, you must log on to the Digitary system at Digitary University. You will need to register your details depending on whether 
+				or not the owner of the document has requested this. Using a web browser, connect to https://digitary.framework.ie and follow the instructions. When prompted to enter
+				a document authentication code, enter the Document Access Code given below.
+			</fo:block>
+
+			<fo:block font-size=""10pt""
+				text-align=""left"" space-after=""1mm"">
+				Where can I find more information about the Digitary system at Digitary University? 
+			</fo:block>
+
+			<fo:block font-size=""8pt"" family=""Verdana,Sans-Serif"" 
+				text-align=""justify"" space-after=""1cm"">
+				Log on to the Digitary website at Digitary University. The URL is: https://digitary.framework.ie 
+			</fo:block>
+
+
+			<!-- Ticket details TABLE -->
+			<fo:table width=""19cm"" table-layout=""fixed"" display-align=""center"" background-color=""#99CCD6"" border=""0.5pt solid black"" margin=""20px"">
+				<fo:table-column column-width=""5cm""/>
+				<fo:table-column column-width=""14cm""/>
+				<fo:table-body>
+					<fo:table-row>
+						<fo:table-cell number-columns-spanned=""2"" padding-top=""10px"">
+							<fo:block text-align=""center"" background-color=""white"" space-after=""5mm"" font-size=""12pt"" border-style=""solid"" border-width=""0.3pt"" border-color=""black"" padding-top=""4px"" padding-bottom=""4px"">Ticket Details</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" font-weight=""bold"" space-after=""2mm"">Verification URL:</fo:block>
+						</fo:table-cell>
+						<fo:table-cell padding-left=""2px"" text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">
+								<fo:basic-link color=""blue"" external-destination=""${verifierhardcopyurl}"">${verifierhardcopyurl}</fo:basic-link>
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" font-weight=""bold"" space-after=""2mm"">Access Code:</fo:block>
+						</fo:table-cell>
+						<fo:table-cell padding-left=""2px"" text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">${ticket.getTicketId()}</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" font-weight=""bold"" space-after=""2mm"">Ticket is verifiable by:</fo:block>
+						</fo:table-cell>
+						<fo:table-cell padding-left=""2px"" text-align=""left"">
+						    <#assign accessType = ticket.getAccessType()?int />						
+   							<#if accessType == 2>
+   							   <fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">${ticket.getRecipient()}</fo:block>
+   							<#else>
+						       <fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">Any user that has registered with Digitary University's online verifier site</fo:block>
+   							</#if>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" font-weight=""bold"" space-after=""2mm"">This ticket is valid until:</fo:block>
+						</fo:table-cell>
+  		                <#assign expiry = ticket.getExpires() />
+						<fo:table-cell padding-left=""2px"" text-align=""left"">
+							<#if expiry == ""-1"">
+								<fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">This ticket has an unlimited validity period</fo:block>
+							<#else>
+								<fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">${formatter.formatDate($expiry)}</fo:block>
+							</#if>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell number-columns-spanned=""2"" padding-top=""10px"">
+							<fo:block text-align=""center"" background-color=""white"" space-after=""5mm"" font-size=""12pt"" border-style=""solid"" border-width=""0.3pt"" border-color=""black"" padding-top=""4px"" padding-bottom=""4px"">Document Details</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" font-weight=""bold"" space-after=""2mm"">This ticket is for the following type of document:</fo:block>
+						</fo:table-cell>
+						<fo:table-cell padding-left=""2px"" text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">${document.getProfileDTO().getProfileName()}</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+					<fo:table-row>
+						<fo:table-cell text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" font-weight=""bold"" space-after=""2mm"">This ticket was generated by:</fo:block>
+						</fo:table-cell>
+						<fo:table-cell padding-left=""2px"" text-align=""left"">
+							<fo:block font-size=""10pt"" text-align=""left"" space-after=""2mm"">${user.getFullName()} <#if user.getEmailAddress()?exists>(<a href=""mailto:${user.getEmailAddress()}"">${user.getEmailAddress()}</a>)</#if></fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+		</fo:flow>
+	</fo:page-sequence>
+</fo:root>
+"
+setting.resetpass.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${systemuser.getFullName()},
+
+     In response to an online password change request made using your account, which contains this e-mail address (${systemuser.getEmailAddress()}), your password has been changed in the online document verification system at the ${institution_name}
+
+     This change will NOT take effect until it has been proven that the change actually came from your account. To prove this, click on the link below and this will activate your new password.
+
+Activation URL: ${activationurl}
+
+If clicking the link above does not work, copy and paste the URL in a new browser window instead.
+
+
+${verifier_contact_name},
+
+${institution_name}
+
+--------------------------------------------------------------
+Powered by Digitary(R)
+http://www.digitary.net
+"
+setting.notify_operator_requests_waiting.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${user.getFullName()},
+
+     You have electronic document requests waiting in your Digitary Inbox. To login to the system, visit:
+${signerurl}
+
+Digitary Secure Notifications Service,
+
+${institution_name}
+
+
+If you do not wish to receive these emails, logon to your user account at: ${signerurl} and disable email notifications via the ""Settings"" menu.
+
+--------------------------------------------------------------
+Powered by Digitary(R) 
+http://www.digitary.net
+"
+setting.notify_owner_doc_ready.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${user.getFullName()},
+
+  A secure electronic ${profilename} has been issued to you by the ${institution_name}.
+  To access this online document, you must login to your secure online document account at the following URL:
+
+${walleturl}
+
+
+NOTE: you will need Adobe Reader installed on your computer in order to view the document. 
+
+
+${wallet_contact_name},
+
+${institution_name}
+
+--------------------------------------------------------------
+Powered by Digitary(R)
+http://www.digitary.net
+
+"
+setting.notify_owner_request_rejected.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${user.getFullName()},
+
+     Your request for an electronic ${profilename} has been denied. Further details are available from the ""Requests->View My Requests"" menu in your online account. You may access your account at the following URL:
+
+${walleturl}
+
+To login to the system, you may use your existing student/graduate account details.
+
+${wallet_contact_name},
+
+${institution_name}
+
+--------------------------------------------------------------
+Powered by Digitary(R) 
+http://www.digitary.net
+"
+setting.invitation_email.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${systemuser.getFullName()},
+
+     This is an automated email. In response to an online registration request made using your e-mail address (${systemuser.getEmailAddress()}), a user account has been created at the online document verification system at ${institution_name}. The account requires activation before it can be used.
+
+To activate the account, you must confirm ownership of the supplied e-mail address by clicking on the following link: ${activationurl}
+
+If clicking the link above does not work, copy and paste the full URL in a new browser window instead.
+
+For any queries about using this service, please contact ${verifier_contact_name} at: ${verifier_contact_email}
+
+If you have not requested this service, please ignore this e-mail.
+
+-----------------------
+${verifier_contact_name},
+
+${institution_name}
+"
+setting.admin_final_invitation_email.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+Dear ${admin.getFullName()},
+
+Invited Relying Party ${user.getFullName()} has activated their account.
+
+--------------------------------
+${institution_name}
+"
+setting.admin_pending_invitation_email.ftl,"Dear ${admin.getFullName()},
+
+The invited relying party ${user.getFullName()} is awaiting activation by an administrator of the system. This email has been sent to this email address as it is registered on the system as an administrator.
+
+Please log on to the system at:
+
+${admin_webroot}/admin/servlet/admin
+
+in order to activate the invited user account.
+
+
+--------------------------------
+${institution_name}
+"
+setting.verifier_requestdoc.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${student.getFullName()},
+
+This email has been sent to you because our records indicate that you are a student/graduate of the ${institution_name} with access to a facility for sharing your qualifications online. The individual named below has requested access to your official documentation 
+online at the ${institution_name}. Details of the individual making the request are shown below. If you wish to provide this individual 
+with online access to your document(s), you must login to your account at: ${wallet_url} and create a document share for this 
+individual using their email address shown below:
+   
+Third Party Details
+===================
+
+Name: 		    ${verifyUser.getFullName()}
+Company:	    ${verifyUser.getCompany()}
+Email Address:	    ${verifyUser.getEmailAddress()}
+
+A message from ${verifyUser.getFullName()} is shown below
+
+-----BEGIN MESSAGE-----
+${message}
+-----END MESSAGE-----
+
+======================================
+
+${institution_name}
+
+--------------------------------------------------------------
+Powered by Digitary(R)
+http://www.digitary.net
+"
+setting.verifier_invitation_account_admin_activated.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${systemuser.getFullName()},
+
+     This is an automated email. In response to an online registration request made using your e-mail address (${systemuser.getEmailAddress()}), a user account has been created at the online document verification system at ${institution_name}. 
+
+The System Administrator has now activated your account, and you may login to the system by clicking on the following link: ${activationurl}
+
+If clicking the link above does not work, copy and paste the full URL in a new browser window instead.
+
+For any queries about using this service, please contact ${verifier_contact_name} at: ${verifier_contact_email}
+
+If you have not requested this service, please ignore this e-mail.
+
+-------------------------
+${verifier_contact_name},
+
+${institution_name}
+
+"
+setting.order_confirmation_details.ftl,"========THIS IS AN AUTOMATED EMAIL - DO NOT REPLY========
+
+Dear ${systemuser.getFullName()},
+
+     This is an automated email containing your order confirmation details in response to your recent order through Digitary for  
+     <#if profileNames ==""GLOBAL"">all your Digitary documents.<#else>your ${profileNames}.</#if>
+
+     Your order has been successfully processed.
+
+     The order ID is: ${orderId}.
+     The authentication code is: ${authCode}.
+
+-------------------------
+${wallet_contact_name},
+
+${institution_name}
+"
